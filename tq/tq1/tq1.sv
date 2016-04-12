@@ -1,6 +1,8 @@
-
-
-
+//-----------------------------------------------------------------------------
+//
+//
+//
+//
 module tq1
 (
      input            ref_clk,
@@ -10,6 +12,7 @@ module tq1
 	output bit [7:0] dout
 );
 
+//-----------------------------------------------------------------------------
 
 localparam DAC_CLK_FACTOR = 10;
 
@@ -17,7 +20,10 @@ bit [$clog2(DAC_CLK_FACTOR)-1:0] cnt;
 
 bit clk;
 
-
+//-----------------------------------------------------------------------------
+//
+//   DAC clock counter
+//
 always_ff @(posedge clk) begin
     
 	 if(cnt < DAC_CLK_FACTOR) begin
@@ -28,6 +34,10 @@ always_ff @(posedge clk) begin
      end 
 end
 
+//-----------------------------------------------------------------------------
+//
+//   DAC clock generator
+//
 always_ff @(posedge clk) begin
 
     //dac_clk <= ~dac_clk;
@@ -37,6 +47,10 @@ always_ff @(posedge clk) begin
     endcase
 end
  
+//-----------------------------------------------------------------------------
+//
+//   DAC data source
+//
 always_ff @(posedge clk) begin
 
     if(cnt == DAC_CLK_FACTOR/2-1) begin
@@ -46,15 +60,19 @@ always_ff @(posedge clk) begin
 end
 
 
-//----------------------------------------
+//-----------------------------------------------------------------------------
+//
+//   PLL clock
+//
 pll pll_inst
 (
     .inclk0 ( ref_clk ),
-	.c0     ( clk     )
+	 .c0     ( clk     )
 );
 
 
 
 
 endmodule
+//-----------------------------------------------------------------------------
 
