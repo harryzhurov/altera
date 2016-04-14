@@ -20,7 +20,6 @@ module tq1
 
 localparam COUNT = 1000;
 
-
 //------------------------------------------------------------------------------
 
 
@@ -63,20 +62,20 @@ assign addr_out = fsm == WRITE ? ram_signals.addr_wr : ram_signals.addr_rd;
 //assign ram_signals.data_wr = data;
 
 always_ff @(posedge clk) begin
-    data_in             = data;
-    data_out            <= ram_signals.data_rd;
-    ram_signals.data_wr <= data_in;
-    
-    addr <= addr_out;
-end
 
-always_ff @(negedge clk) begin
+	if(ram_signals.addr_rd > 3) begin
+		data_out <= ram_signals.data_rd + ram_signals.addr_rd - data_out;
+	end
+
+	data_in             <= data;
+	ram_signals.data_wr <= data_in;   
+    addr                <= addr_out;
 end
 
 always_ff @(posedge clk) begin
 
-    ram_signals.wren <= 0;
-    oe               <= 0;
+    ram_signals.wren    <= 0;
+    oe                  <= 0;
     case(fsm)
     //--------------------------------
     IDLE: begin
